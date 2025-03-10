@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let loadingIndicator = modal.querySelector(".loading-indicator");
 
             modal.style.display = "flex";
+            document.body.classList.add('modal-open');
             userList.innerHTML = ""; 
             loadingIndicator.style.display = "block";
 
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let loadingIndicator = modal.querySelector(".loading-indicator");
 
             modal.style.display = "flex";
+            document.body.classList.add('modal-open');
             feedbackList.innerHTML = ""; 
             loadingIndicator.style.display = "block";
 
@@ -38,9 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (event.target.classList.contains("close-modal")) {
             event.target.closest(".modal").style.display = "none";
+            document.body.classList.remove('modal-open');
         }
 
         if (event.target.classList.contains("modal")) {
+            document.body.classList.remove('modal-open');
             event.target.style.display = "none";
         }
     });
@@ -49,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.key === "Escape") {
             let openModal = document.querySelector(".modal[style='display: flex;']");
             if (openModal) {
+                document.body.classList.remove('modal-open');
                 openModal.style.display = "none";
             }
         }

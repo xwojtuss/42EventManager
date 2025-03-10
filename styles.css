@@ -102,6 +102,10 @@ label {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 .close-modal {
     position: absolute;
     top: 10px;
@@ -149,6 +153,7 @@ a {
 }
 
 .date {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
     display: flex;
@@ -244,7 +249,6 @@ a {
 .img-feedback,.img-users {
     filter: invert(81%) sepia(26%) saturate(5974%) hue-rotate(180deg) brightness(96%) contrast(91%);
     width: 40px;
-    overflow: visible;
     margin: auto;
     height: auto;
     transition: all 0.3s ease-in-out;
@@ -264,6 +268,7 @@ button img {
 }
 
 .event-type {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: var(--event-color);
     text-align: left;
     font-family: "Inter-Bold", sans-serif;
@@ -334,7 +339,6 @@ button img {
 .triangle {
     width: 21px;
     height: 13px;
-    overflow: visible;
     margin: 0 auto;
 }
 

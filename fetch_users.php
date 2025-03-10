@@ -2,11 +2,11 @@
 require 'api_calls.php';
 session_start();
 
-if (!isset($_SESSION['token'])) {
+if (!isset($_SESSION['access_token'])) {
     die("Unauthorized access.");
 }
 
-$token = $_SESSION['token'];
+$token = $_SESSION['access_token'];
 
 if (isset($_GET['event_id'])) {
     $event_id = intval($_GET['event_id']);

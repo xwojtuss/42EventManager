@@ -1,14 +1,24 @@
 <?php
+
+$env = parse_ini_file('.env');
+
+if (isset($_GET['error'])) {
+    header("Location: {$env['INDEX_URL']}", TRUE, 301);
+    exit();
+}
+// else if (!isset($_GET['code']))
+//     die('Unauthorized access');
+
 require 'api_calls.php';
 session_start();
 
-$token = debugGetToken();
-$_SESSION['token'] = $token;
-$campuses = fetchCampuses($token);
+if (!isset($_SESSION['access_token']) || !isset($_SESSION['expires_at']) || $_SESSION['expires_at'] <= time())
+    getToken($_GET['code']);
+$campuses = fetchCampuses($_SESSION['access_token']);
 $selected_id = $_GET['campus'] ?? null;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$per_page = 5;
-$events = $selected_id ? fetchEventsByCampus($selected_id, $token, $page, $per_page) : [];
+$per_page = 30;
+$events = $selected_id ? fetchEventsByCampus($selected_id, $_SESSION['access_token'], $page, $per_page) : [];
   
 ?>
 
@@ -65,11 +75,11 @@ $events = $selected_id ? fetchEventsByCampus($selected_id, $token, $page, $per_p
                     </div>
                     <div class="right">
                         <button class="show-users-btn" data-id="<?= htmlspecialchars($event['id']) ?>">
-                            <img src="users.svg" class="img-users" />
+                            <img src="users.svg" class="img-users" alt="registered-users" />
                         </button>
                         <br />
                         <button class="show-feedback-btn" data-id="<?= htmlspecialchars($event['id']) ?>">
-                            <img src="feedback.svg" class="img-feedback" />
+                            <img src="feedback.svg" class="img-feedback" alt="feedbacks" />
                         </button>
                     </div>
                 </div>
@@ -79,7 +89,7 @@ $events = $selected_id ? fetchEventsByCampus($selected_id, $token, $page, $per_p
                     <span><?= nl2br(htmlspecialchars($event['description'])) ?></span>
                 </div>
                 <button class="expand-bar toggle-desc" data-id="<?= htmlspecialchars($event['id']) ?>">
-                    <img class="triangle" src="polygon.svg" />
+                    <img class="triangle" src="polygon.svg" alt="slider-triangle" />
                 </button>
                 <div id="userModal-<?= htmlspecialchars($event['id']) ?>" class="modal">
                     <div class="modal-content">
@@ -105,7 +115,6 @@ $events = $selected_id ? fetchEventsByCampus($selected_id, $token, $page, $per_p
 <?php else: ?>
     <p>No events found for this campus.</p>
 <?php endif; ?>
-    <?php endif; ?>
 </div>
     <div class="pagination">
         <?php 
@@ -125,6 +134,7 @@ $events = $selected_id ? fetchEventsByCampus($selected_id, $token, $page, $per_p
             <a href="?<?= http_build_query($query_params) ?>">Next</a>
         <?php endif; ?>
     </div>
+<?php endif; ?>
     <script src="event_listeners.js"></script>
 </body>
 </html>
